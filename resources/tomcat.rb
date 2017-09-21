@@ -39,7 +39,7 @@ action :install do
   end
 
   # leave a breadcrumb if extraction was successful.  This is slightly more resilient than relying on a notify to succeed in one chef run.
-  breadcrumb_path = ::File.join(new_resource.install_path,".tomcat_unpacked_checksum-#{new_resource.tomcat_binary_checksum}")
+  breadcrumb_path = ::File.join(new_resource.install_path, ".tomcat_unpacked_checksum-#{new_resource.tomcat_binary_checksum}")
 
   bash "Unpack Tomcat Binary to #{tomcat_package_download_location}" do
     code <<-EOH
@@ -69,12 +69,10 @@ action :install do
   template "/etc/systemd/system/tomcat-#{new_resource.instance_name}.service" do
     source 'tomcat.service.erb'
     cookbook 'jvogt_tomcat'
-    variables({
-      install_path: new_resource.install_path,
-      run_user: new_resource.run_user,
-      run_group: new_resource.run_group,
-      java_home: node['jvogt_tomcat']['java_home']
-      })
+    variables(install_path: new_resource.install_path,
+              run_user: new_resource.run_user,
+              run_group: new_resource.run_group,
+              java_home: node['jvogt_tomcat']['java_home'])
   end
 
   service "tomcat-#{new_resource.instance_name}" do

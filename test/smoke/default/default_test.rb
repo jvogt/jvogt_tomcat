@@ -29,7 +29,7 @@ describe directory("#{tomcat_install_dir}/conf") do
   it { should exist }
   its('group') { should eq 'tomcat-test-group' }
   its('mode') { should cmp '0775' }
-  end
+end
 
 describe file("#{tomcat_install_dir}/conf/server.xml") do
   its('group') { should eq 'tomcat-test-group' }

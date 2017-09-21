@@ -11,4 +11,3 @@ chef_version '>= 13.0' if respond_to?(:chef_version)
 # source_url 'https://github.com/jvogt/jvogt_tomcat'
 
 supports 'centos', '>= 7.0'
-
