@@ -32,7 +32,7 @@ jvogt_tomcat 'default'
 
 # Installs tomcat with custom user & group
 jvogt_tomcat 'default' do
-  user 'someuser'
-  group 'somegroup'
+  run_user 'someuser'
+  run_group 'somegroup'
 end
 ```
