@@ -16,3 +16,16 @@ directory node['jvogt_tomcat']['install_path'] do
   recursive true
 end
 
+tomcat_package_download_location = File.join(Chef::Config[:file_cache_path], File.basename(node['jvogt_tomcat']['tomcat_binary']['uri']))
+
+remote_file tomcat_package_download_location do
+  source node['jvogt_tomcat']['tomcat_binary']['uri']
+  checksum node['jvogt_tomcat']['tomcat_binary']['checksum']
+  notifies :run, 'execute[Unpack Tomcat Binary]', :immediately
+end
+
+execute 'Unpack Tomcat Binary' do
+  command "tar xvf #{tomcat_package_download_location} -C #{node['jvogt_tomcat']['install_path']} --strip-components=1"
+  action :nothing
+end
+
