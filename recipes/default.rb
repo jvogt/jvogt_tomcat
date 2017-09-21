@@ -9,3 +9,5 @@ user node['jvogt_tomcat']['user'] do
   group node['jvogt_tomcat']['group']
 end
 
+package node['jvogt_tomcat']['java']['package_name']
+
