@@ -40,3 +40,8 @@ end
   end
 end
 
+template '/etc/systemd/system/tomcat.service'
+
+service 'tomcat' do
+  action [:start, :enable]
+end
