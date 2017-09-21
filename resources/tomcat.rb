@@ -68,6 +68,7 @@ action :install do
 
   template "/etc/systemd/system/tomcat-#{new_resource.instance_name}.service" do
     source 'tomcat.service.erb'
+    cookbook 'jvogt_tomcat'
     variables({
       install_path: new_resource.install_path,
       run_user: new_resource.run_user,
