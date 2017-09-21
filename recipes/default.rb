@@ -29,3 +29,14 @@ execute 'Unpack Tomcat Binary' do
   action :nothing
 end
 
+directory File.join(node['jvogt_tomcat']['install_path'], 'conf') do
+  group node['jvogt_tomcat']['group'] # TODO: write execute to idempotently chgrp on contents
+  mode '0755'
+end
+
+%w(webapps work temp logs).each do |d|
+  directory File.join(node['jvogt_tomcat']['install_path'], d) do
+    user node['jvogt_tomcat']['user'] # TODO: write execute to idempotently chgrp on contents
+  end
+end
+
