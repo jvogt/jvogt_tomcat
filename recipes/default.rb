@@ -21,14 +21,17 @@ tomcat_package_download_location = File.join(Chef::Config[:file_cache_path], Fil
 remote_file tomcat_package_download_location do
   source node['jvogt_tomcat']['tomcat_binary']['uri']
   checksum node['jvogt_tomcat']['tomcat_binary']['checksum']
-  notifies :run, 'execute[Unpack Tomcat Binary]', :immediately
 end
 
-execute 'Unpack Tomcat Binary' do
-  command "tar xvf #{tomcat_package_download_location} -C #{node['jvogt_tomcat']['install_path']} --strip-components=1"
-  action :nothing
-end
+# leave a breadcrumb if extraction was successful.  This is slightly more resilient than relying on a notify to succeed in one chef run.
+breadcrumb_path = File.join(node['jvogt_tomcat']['install_path'],".tomcat_unpacked_checksum-#{node['jvogt_tomcat']['tomcat_binary']['checksum']}")
 
+bash 'Unpack Tomcat Binary' do
+  code <<-EOH
+    tar xvf "#{tomcat_package_download_location}" -C "#{node['jvogt_tomcat']['install_path']}" --strip-components=1
+    touch "#{breadcrumb_path}"
+  EOH
+  not_if { ::File.exist?(breadcrumb_path) }
   notifies :run, 'execute[Permissions Update]', :immediately
 end
 
