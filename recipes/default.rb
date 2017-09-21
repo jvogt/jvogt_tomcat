@@ -11,3 +11,8 @@ end
 
 package node['jvogt_tomcat']['java']['package_name']
 
+directory node['jvogt_tomcat']['install_path'] do
+  action :create
+  recursive true
+end
+
